@@ -1,27 +1,26 @@
-const {gql} = require('apollo-server-express');
+import { DocumentNode } from "graphql";
+import { gql } from "apollo-server-express";
 
-const typeDef = gql`
+const typeDef: DocumentNode = gql`
     type GraphData {
         name: String
         valueType: String
         datapoints: [DataPoint]
     }
-    
+
     type DataPoint {
         value: Int
-        timestamp: String        
+        timestamp: String
     }
-    
+
     type WatchData {
         HeartRateData: GraphData
         StressData: GraphData
     }
-    
+
     extend type Query {
         WatchData: WatchData
     }
-    `;
+`;
 
-module.exports = {
-    typeDef
-}
+export default typeDef;
