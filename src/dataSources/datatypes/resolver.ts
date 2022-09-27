@@ -1,5 +1,5 @@
 interface Resolver {
-    Query: any;
+  Query: Object;
 }
 
 export default Resolver;

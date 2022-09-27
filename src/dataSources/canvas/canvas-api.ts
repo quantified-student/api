@@ -1,8 +1,7 @@
-const { RESTDataSource } = require("apollo-datasource-rest");
+import { RESTDataSource } from "apollo-datasource-rest";
 
 class CanvasAPI extends RESTDataSource {
   willSendRequest(request: any) {
-    console.log(this.context.Authorization);
     request.headers.set(
       "Authorization",
       `Bearer ${this.context.Authorization}`

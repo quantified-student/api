@@ -9,9 +9,9 @@ import loggingPlugin from "./plugins/logging";
 
 import { ApolloServer, gql } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import http from "http";
 
-const http = require("http");
-const typeDef = gql`
+const typeDef: DocumentNode = gql`
   type Query
 `;
 
@@ -34,9 +34,7 @@ async function startApolloServer(expressApp: Express) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    dataSources: () => {
-      return dataSources;
-    },
+    dataSources: () => dataSources,
     context: ({ req }: any) => {
       return {
         // Req is the request object from express
@@ -50,7 +48,9 @@ async function startApolloServer(expressApp: Express) {
   await server.start();
   server.applyMiddleware({ app: expressApp });
 
-  await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
+  await new Promise((resolve: any) =>
+    httpServer.listen({ port: 4000 }, resolve)
+  );
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
 }
 
