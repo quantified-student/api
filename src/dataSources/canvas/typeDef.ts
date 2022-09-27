@@ -1,7 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const apollo_server_express_1 = require("apollo-server-express");
-const typeDef = (0, apollo_server_express_1.gql) `
+import { DocumentNode } from "graphql";
+import { gql } from "apollo-server-express";
+
+const typeDef: DocumentNode = gql`
   type Enrollments {
     type: String
     role: String
@@ -54,4 +54,5 @@ const typeDef = (0, apollo_server_express_1.gql) `
     CanvasCourses: [CanvasCourses]
   }
 `;
-exports.default = typeDef;
+
+export default typeDef;

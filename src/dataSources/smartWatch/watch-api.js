@@ -1,20 +1,16 @@
-const {RESTDataSource} = require('apollo-datasource-rest');
-
-const StressData = require('./stress-data');
-const HeartRateData = require('./heart-rate-data');
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const heart_rate_data_1 = __importDefault(require("./heart-rate-data"));
+const stress_data_1 = __importDefault(require("./stress-data"));
 class WatchDataApi {
-    constructor() {
-    }
-
     getWatchData() {
         return {
-            StressData,
-            HeartRateData
-        }
+            stressData: stress_data_1.default,
+            heartRateData: heart_rate_data_1.default,
+        };
     }
 }
-
-module.exports = {
-    WatchDataApi
-};
+exports.default = WatchDataApi;

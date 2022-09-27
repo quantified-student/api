@@ -1,7 +1,6 @@
 import DataSource from "../datatypes/datasource";
-
-const { CanvasAPI } = require("./canvas-api");
-const { resolvers } = require("./resolvers");
-const { typeDef } = require("./typeDef");
+import CanvasAPI from "./canvas-api";
+import resolvers from "./resolvers";
+import typeDef from "./typeDef";
 
 export default new DataSource("canvasData", CanvasAPI, resolvers, typeDef);
