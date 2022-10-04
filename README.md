@@ -9,4 +9,8 @@ Resolvers:
 - Canvas Data
   - Course data
 - HUAWEI Smartwatch
+       apollo
   - Dummy data
+=======
+  - Dummy data
+       develop
