@@ -4,6 +4,8 @@ import { gql } from "apollo-server-express";
 const typeDef: DocumentNode = gql`
     extend type Query {
         CanvasCourses: [CanvasCourses]
+        Assignments: [Assignments]
+        Submissions: [Submissions]
     }
 
     type CanvasCourses {
@@ -52,6 +54,103 @@ const typeDef: DocumentNode = gql`
 
     type Calendar {
         ics: String
+    }
+
+    type Assignments {
+        id: Int
+        description: String
+        due_at: String
+        unlock_at: String
+        lock_at: String
+        points_possible: Int
+        grading_type: String
+        assignment_group_id: Int
+        grading_standard_id: Int
+        created_at: String
+        updated_at: String
+        peer_reviews: Boolean
+        automatic_peer_reviews: Boolean
+        position: Int
+        grade_group_students_individually: Boolean
+        anonymous_peer_reviews: Boolean
+        group_category_id: String
+        post_to_sis: Boolean
+        moderated_grading: Boolean
+        omit_from_final_grade: Boolean
+        intra_group_peer_reviews: Boolean
+        anonymous_instructor_annotations: Boolean
+        anonymous_grading: Boolean
+        graders_anonymous_to_graders: Boolean
+        grader_count: Int
+        grader_comments_visible_to_graders: Boolean
+        final_grader_id: String
+        grader_names_visible_to_final_grader: Boolean
+        allowed_attempts: Int
+        annotatable_attachment_id: String
+        secure_params: String
+        lti_context_id: String
+        course_id: Int
+        name: String
+        has_submitted_submissions: Boolean
+        due_date_required: Boolean
+        max_name_length: Int
+        in_closed_grading_period: Boolean
+        graded_submissions_exist: Boolean
+        is_quiz_assignment: Boolean
+        can_duplicate: Boolean
+        original_course_id: String
+        original_assignment_id: String
+        original_lti_resource_link_id: String
+        original_assignment_name: String
+        original_quiz_id: String
+        workflow_state: String
+        important_dates: Boolean
+        muted: Boolean
+        html_url: String
+        has_overrides: Boolean
+        needs_grading_count: Int
+        sis_assignment_id: String
+        integration_id: String
+        published: Boolean
+        unpublishable: Boolean
+        only_visible_to_overrides: Boolean
+        locked_for_user: Boolean
+        submissions_download_url: String
+        post_manually: Boolean
+        anonymize_students: Boolean
+        require_lockdown_browser: Boolean
+        submission_types: [String]
+    }
+
+    type Submissions {
+        id: Int
+        body: String
+        url: String
+        grade: String
+        score: String
+        submitted_at: String
+        assignment_id: Int
+        user_id: Int
+        submission_type: String
+        workflow_state: String
+        grade_matches_current_submission: Boolean
+        graded_at: String
+        grader_id: String
+        attempt: String
+        cached_due_date: String
+        excused: String
+        late_policy_status: String
+        points_deducted: String
+        grading_period_id: String
+        extra_attempts: String
+        posted_at: String
+        redo_request: Boolean
+        late: Boolean
+        missing: Boolean
+        seconds_late: Int
+        entered_grade: String
+        entered_score: String
+        preview_url: String
     }
 `;
 
