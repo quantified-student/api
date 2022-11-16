@@ -3,12 +3,11 @@ import { gql } from "apollo-server-express";
 
 const typeDef: DocumentNode = gql`
     extend type Query {
-        CanvasCourses: [CanvasCourses]
-        Assignments: [Assignments]
-        Submissions: [Submissions]
+        CanvasCourses: [CanvasCourse]
+        CanvasCourse(courseId: Int): CanvasCourse
     }
 
-    type CanvasCourses {
+    type CanvasCourse {
         id: Int
         name: String
         account_id: Int
@@ -39,24 +38,17 @@ const typeDef: DocumentNode = gql`
         workflow_state: String
         course_format: String
         restrict_enrollments_to_course_dates: Boolean
-        enrollments: [Enrollments]
+        enrollments: [Enrollment]
         calendar: Calendar
-    }
-
-    type Enrollments {
-        type: String
-        role: String
-        role_id: Int
-        user_id: Int
-        enrollment_state: String
-        limit_privileges_to_course_section: Boolean
+        
+        assignments: [Assignment]
     }
 
     type Calendar {
         ics: String
     }
 
-    type Assignments {
+    type Assignment {
         id: Int
         description: String
         due_at: String
@@ -120,9 +112,12 @@ const typeDef: DocumentNode = gql`
         anonymize_students: Boolean
         require_lockdown_browser: Boolean
         submission_types: [String]
+        
+        submissions: [Submission]
+        outcomes: [Outcome]
     }
 
-    type Submissions {
+    type Submission {
         id: Int
         body: String
         url: String
@@ -152,6 +147,79 @@ const typeDef: DocumentNode = gql`
         entered_score: String
         preview_url: String
     }
+
+    type Links {
+        user: String
+        learning_outcome: String
+        alignment: String
+        assignment: String
+    }
+
+    type Outcome {
+        id: Int
+        mastery: Boolean
+        score: Int
+        possible: Int
+        percent: Int
+        hide_points: Boolean
+        hidden: Boolean
+        submitted_or_assessed_at: String
+        links: Links
+    }
+
+    type User {
+        id: Int
+        name: String
+        created_at: String
+        sortable_name: String
+        short_name: String
+        sis_user_id: String
+        integration_id: String
+        login_id: String
+    }
+
+    type Grades {
+        html_url: String
+        current_grade: String
+        current_score: Int
+        final_grade: String
+        final_score: Float
+        unposted_current_score: Int
+        unposted_current_grade: String
+        unposted_final_score: Float
+        unposted_final_grade: String
+    }
+
+    type Enrollment {
+        id: Int
+        user_id: Int
+        course_id: Int
+        type: String
+        created_at: String
+        updated_at: String
+        associated_user_id: String
+        start_at: String
+        end_at: String
+        course_section_id: Int
+        root_account_id: Int
+        limit_privileges_to_course_section: Boolean
+        enrollment_state: String
+        role: String
+        role_id: Int
+        last_activity_at: String
+        last_attended_at: String
+        total_activity_time: Int
+        sis_account_id: String
+        sis_course_id: String
+        course_integration_id: String
+        sis_section_id: String
+        section_integration_id: String
+        sis_user_id: String
+        html_url: String
+        user: User
+        grades: Grades
+    }
+
 `;
 
 export default typeDef;
