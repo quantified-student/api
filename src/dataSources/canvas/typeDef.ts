@@ -4,8 +4,7 @@ import { gql } from "apollo-server-express";
 const typeDef: DocumentNode = gql`
     extend type Query {
         CanvasCourses: [CanvasCourses]
-        Assignments: [Assignments]
-        Submissions: [Submissions]
+        CanvasCourse(courseId: Int): CanvasCourses
     }
 
     type CanvasCourses {
@@ -41,6 +40,8 @@ const typeDef: DocumentNode = gql`
         restrict_enrollments_to_course_dates: Boolean
         enrollments: [Enrollments]
         calendar: Calendar
+        
+        assignments: [Assignment]
     }
 
     type Enrollments {
@@ -56,7 +57,7 @@ const typeDef: DocumentNode = gql`
         ics: String
     }
 
-    type Assignments {
+    type Assignment {
         id: Int
         description: String
         due_at: String
@@ -120,9 +121,11 @@ const typeDef: DocumentNode = gql`
         anonymize_students: Boolean
         require_lockdown_browser: Boolean
         submission_types: [String]
+        
+        submissions: [Submission]
     }
 
-    type Submissions {
+    type Submission {
         id: Int
         body: String
         url: String
