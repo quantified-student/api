@@ -29,7 +29,7 @@ pipeline {
 
     stage('Deploy to Kubernetes Cluster') {
       steps {
-        sh "/usr/local/bin/kubectl rollout restart deployment qsapi-deployment"
+        sh "/usr/local/bin/kubectl rollout restart deployment/qsapi-deployment"
       }
     }
   }
