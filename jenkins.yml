@@ -1,0 +1,38 @@
+pipeline {
+  environment {
+    dockerimagename = "mvdijk01/quantifiedstudent"
+  }
+
+  agent any
+
+  stages {
+    stage('Checkout Source') {
+      steps {
+        git 'https://github.com/quantifiedstudent/web-api.git'
+      }
+    }
+
+    stage('Build Image') {
+      steps {
+        script {
+          dockerImage = docker.build dockerimagename
+        }
+      }
+    }
+
+    stage('Pushing Image') {
+      environment {
+        registryCredential = 'dockerhubqs'
+      }
+      steps {
+        steps {
+          script {
+            docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+              dockerImage.push("latest")
+            }
+          }
+        }
+      }
+    }
+  }
+}
