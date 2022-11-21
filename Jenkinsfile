@@ -6,12 +6,6 @@ pipeline {
   agent any
 
   stages {
-    stage('Checkout Source') {
-      steps {
-        git 'https://github.com/quantifiedstudent/web-api.git'
-      }
-    }
-
     stage('Build Image') {
       steps {
         script {
@@ -25,13 +19,17 @@ pipeline {
         registryCredential = 'dockerhubqs'
       }
       steps {
-        steps {
           script {
             docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
               dockerImage.push("latest")
             }
           }
-        }
+      }
+    }
+
+    stage('Deploy to Kubernetes Cluster') {
+      steps {
+        sh "/usr/local/bin/kubectl rollout restart deployment/qsapi-deployment -n default"
       }
     }
   }
