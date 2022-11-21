@@ -7,17 +7,18 @@ metadata:
 spec:
   replicas: 3
   selector:
-    app: qsapi
+    matchLabels:
+      app: qsapi
   template:
     metadata:
       labels:
-        app: nginx
+        app: qsapi
     spec:
       containers:
       - name: qsapi
         image: mvdijk01/quantifiedstudent:latest
         ports:
-        - containerPort: 80
+        - containerPort: 4000
         resources:
           requests:
             memory: "64Mi"

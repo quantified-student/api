@@ -29,6 +29,8 @@ pipeline {
 
     stage('Deploy to Kubernetes Cluster') {
       steps {
+        sh "cp ./kubernetes.yml /var/lib/jenkins/kubernetes/qsapi/kubernetes.yml"
+        sh "cd /var/lib/jenkins/kubernetes/qsapi/; /usr/local/bin/kubectl apply -f ."
         sh "/usr/local/bin/kubectl rollout restart deployment/qsapi-deployment -n default"
       }
     }
