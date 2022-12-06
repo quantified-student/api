@@ -1,4 +1,4 @@
-# Quantified Student Web API
+# QS Web API
 
 Stack
 - ExpressJS with Apollo
@@ -9,8 +9,4 @@ Resolvers:
 - Canvas Data
   - Course data
 - HUAWEI Smartwatch
-       apollo
   - Dummy data
-=======
-  - Dummy data
-       develop
