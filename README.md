@@ -1,4 +1,4 @@
-# Quantified Student Web API
+# QS Web API
 
 Stack
 - ExpressJS with Apollo
