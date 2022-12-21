@@ -2,8 +2,8 @@ import Resolver from "../types/resolver";
 
 const resolvers: Resolver = {
   Query: {
-    attendanceData: async (_: any, __: any, { dataSources }: any) => {
-      return dataSources.attendanceData.getAttendanceData();
+    attendanceData: async (_: never, __: never, dataSources: any) => {
+      return dataSources.AttendanceData.getAttendanceData();
     },
   },
 };

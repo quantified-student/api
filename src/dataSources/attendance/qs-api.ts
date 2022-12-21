@@ -1,14 +1,10 @@
 import { RESTDataSource } from "apollo-datasource-rest";
 import { convertMsToHM } from "./helpers";
-import { AttendanceData } from "./types";
+import { AttendanceData, RawAttendanceData } from "./types";
 
 class QsApi extends RESTDataSource {
   willSendRequest(request: any) {
     request.headers.set("Authorization", this.context.Authorization);
-  }
-
-  willSendResponse(response: any) {
-    console.log(response);
   }
 
   constructor() {
@@ -16,13 +12,11 @@ class QsApi extends RESTDataSource {
     this.baseURL = "https://qsapi.azurewebsites.net/attendance";
   }
 
-  async getAttendanceData() {
-    const rawData = await this.get("");
-
-    console.log(rawData);
-
+  public transformAttendanceData(
+    rawData: Array<RawAttendanceData>
+  ): Array<AttendanceData> {
     const attendanceData: Array<AttendanceData> = new Array<AttendanceData>();
-    let timeVariableMs: number = 0;
+    let totalAttendanceTimeMs: number = 0;
 
     for (let i = 0; i < rawData.length; i += 2) {
       const firstDate = new Date(rawData[i].DateTime);
@@ -37,11 +31,11 @@ class QsApi extends RESTDataSource {
       if (secondTimeStamp < firstTimeStamp)
         throw new Error("second time is before first!");
 
-      timeVariableMs += secondTimeStamp - firstTimeStamp;
+      totalAttendanceTimeMs += secondTimeStamp - firstTimeStamp;
 
       if (i + 3 >= rawData.length) {
         attendanceData.push({
-          attendanceHours: convertMsToHM(timeVariableMs),
+          attendanceHours: convertMsToHM(totalAttendanceTimeMs),
           date: firstDate.toLocaleDateString(),
         });
 
@@ -52,15 +46,21 @@ class QsApi extends RESTDataSource {
 
       if (thirdDate != secondDate.getDate()) {
         attendanceData.push({
-          attendanceHours: convertMsToHM(timeVariableMs),
+          attendanceHours: convertMsToHM(totalAttendanceTimeMs),
           date: firstDate.toLocaleDateString(),
         });
 
-        timeVariableMs = 0;
+        totalAttendanceTimeMs = 0;
       }
     }
 
     return attendanceData;
+  }
+
+  async getAttendanceData() {
+    const rawData = await this.get<Array<RawAttendanceData>>("");
+
+    return this.transformAttendanceData(rawData);
   }
 }
 
