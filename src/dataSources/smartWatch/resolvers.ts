@@ -1,4 +1,4 @@
-import Resolver from "../datatypes/resolver";
+import Resolver from "../types/resolver";
 
 const resolvers: Resolver = {
   Query: {

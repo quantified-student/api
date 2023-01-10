@@ -1,4 +1,4 @@
-import DataSource from "../datatypes/datasource";
+import DataSource from "../types/datasource";
 import typeDef from "./typeDef";
 import resolvers from "./resolvers";
 import WatchDataApi from "./watch-api";
