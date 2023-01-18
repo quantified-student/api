@@ -2,7 +2,7 @@ import { Express } from "express";
 
 import CanvasData from "./dataSources/canvas";
 import WatchData from "./dataSources/smartWatch";
-import Attendance from "./dataSources/attendance";
+import Attendance from "./dataSources/qs-api";
 import DataSource from "./dataSources/types/datasource";
 import { DocumentNode } from "graphql";
 
@@ -25,7 +25,7 @@ const dataSources: any = {};
 async function startApolloServer(expressApp: Express) {
   const httpServer = http.createServer(expressApp);
 
-  // Load datasources
+  // Load data sources
   sources.forEach((source: DataSource) => {
     typeDefs.push(source.typeDef);
     resolvers.push(source.resolvers);
@@ -48,6 +48,10 @@ async function startApolloServer(expressApp: Express) {
 
   await server.start();
   server.applyMiddleware({ app: expressApp });
+
+  // expressApp.use('/', (req, res) => {
+  //   console.log(req.headers)
+  // });
 
   await new Promise((resolve: any) =>
     httpServer.listen({ port: process.env.PORT || 8080 }, resolve)

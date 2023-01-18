@@ -9,7 +9,7 @@ class QsApi extends RESTDataSource {
 
   constructor() {
     super();
-    this.baseURL = "https://qsapi.azurewebsites.net/attendance";
+    this.baseURL = "https://qsapi.azurewebsites.net/";
   }
 
   public transformAttendanceData(
@@ -58,9 +58,18 @@ class QsApi extends RESTDataSource {
   }
 
   async getAttendanceData() {
-    const rawData = await this.get<Array<RawAttendanceData>>("");
+    const rawData = await this.get<Array<RawAttendanceData>>("attendance");
 
     return this.transformAttendanceData(rawData);
+  }
+
+  public async getUserFromDatabase(canvasId: number) {
+    return this.get(`users/${canvasId}`);
+  }
+
+  public async createNewUser(canvasId: number, canvasAccessToken: string)
+  {
+
   }
 }
 

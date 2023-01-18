@@ -35,6 +35,10 @@ class CanvasAPI extends RESTDataSource {
         );
     }
 
+    async getCurrentUser() {
+        return this.get(`users/self`);
+    }
+
     async getOutcomesData(courseId: number, assignmentId: number) {
         const result = await this.get(`https://fhict.instructure.com/api/v1/courses/${courseId}/outcome_results?include=outcomes&include=alignments&per_page=100`);
         return result.outcome_results.filter((outcome: any) => {
