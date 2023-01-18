@@ -1,16 +1,15 @@
-import { Express } from "express";
+import { Express } from 'express';
 
-import CanvasData from "./dataSources/canvas";
-import WatchData from "./dataSources/smartWatch";
-import Attendance from "./dataSources/attendance";
-import DataSource from "./dataSources/types/datasource";
-import { DocumentNode } from "graphql";
+import { DocumentNode } from 'graphql';
+import { ApolloServer, gql } from 'apollo-server-express';
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import http from 'http';
+import CanvasData from './dataSources/canvas';
+import WatchData from './dataSources/smartWatch';
+import Attendance from './dataSources/attendance';
+import DataSource from './dataSources/types/datasource';
 
-import loggingPlugin from "./plugins/logging";
-
-import { ApolloServer, gql } from "apollo-server-express";
-import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
-import http from "http";
+import loggingPlugin from './plugins/logging';
 
 const typeDef: DocumentNode = gql`
   type Query
@@ -36,26 +35,22 @@ async function startApolloServer(expressApp: Express) {
     typeDefs,
     resolvers,
     dataSources: () => dataSources,
-    context: ({ req }: any) => {
-      return {
-        // Req is the request object from express
-        // Add headers to the context, so we can forward them in the resolvers
-        Authorization: req.headers.authorization,
-      };
-    },
+    context: ({ req }: any) => ({
+      // Req is the request object from express
+      // Add headers to the context, so we can forward them in the resolvers
+      Authorization: req.headers.authorization,
+    }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer }), loggingPlugin],
   });
 
   await server.start();
   server.applyMiddleware({ app: expressApp });
 
-  await new Promise((resolve: any) =>
-    httpServer.listen({ port: process.env.PORT || 8080 }, resolve)
-  );
+  await new Promise((resolve: any) => httpServer.listen({ port: process.env.PORT || 8080 }, resolve));
   console.log(
     `🚀 Server ready at http://localhost:${process.env.PORT || 8080}${
       server.graphqlPath
-    }`
+    }`,
   );
 }
 

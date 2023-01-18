@@ -1,5 +1,5 @@
-import { gql } from "apollo-server-core";
-import { DocumentNode } from "graphql";
+import { gql } from 'apollo-server-core';
+import { DocumentNode } from 'graphql';
 
 const typeDef: DocumentNode = gql`
   extend type Query {
