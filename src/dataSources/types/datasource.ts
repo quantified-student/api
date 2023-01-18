@@ -1,5 +1,5 @@
-import { DocumentNode } from 'graphql';
-import Resolver from './resolver';
+import { DocumentNode } from "graphql";
+import Resolver from "./resolver";
 
 interface DataSourceShape {
   name: string;
@@ -13,7 +13,7 @@ class DataSource implements DataSourceShape {
     name: string,
     dataSource: any,
     resolvers: Resolver,
-    typeDef: DocumentNode,
+    typeDef: DocumentNode
   ) {
     this.name = name;
     this.dataSource = dataSource;

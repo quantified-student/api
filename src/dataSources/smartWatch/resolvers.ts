@@ -1,8 +1,10 @@
-import Resolver from '../types/resolver';
+import Resolver from "../types/resolver";
 
 const resolvers: Resolver = {
   Query: {
-    WatchData: async (_: any, __: any, { dataSources }: any) => dataSources.watchData.getWatchData(),
+    WatchData: async (_: any, __: any, { dataSources }: any) => {
+      return dataSources.watchData.getWatchData();
+    },
   },
 };
 
