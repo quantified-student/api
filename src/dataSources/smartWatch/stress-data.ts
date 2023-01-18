@@ -1,6 +1,6 @@
 export default {
-  name: "Stress",
-  valueType: "stress",
+  name: 'Stress',
+  valueType: 'stress',
   datapoints: [
     {
       timestamp: 1611233538,

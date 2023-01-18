@@ -1,5 +1,5 @@
-import { DocumentNode } from "graphql";
-import { gql } from "apollo-server-express";
+import { DocumentNode } from 'graphql';
+import { gql } from 'apollo-server-express';
 
 const typeDef: DocumentNode = gql`
   type DataPoint {

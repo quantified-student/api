@@ -1,6 +1,6 @@
 export default {
-  name: "Heart Rate",
-  valueType: "bpm",
+  name: 'Heart Rate',
+  valueType: 'bpm',
   datapoints: [
     {
       timestamp: 1611233538,
