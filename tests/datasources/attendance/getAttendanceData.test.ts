@@ -32,7 +32,7 @@ describe("qs-api", () => {
   const exptectedData = [
     {
       attendanceHours: 3,
-      date: "21-12-2022",
+      date: "12/21/2022",
     },
   ];
   const correctTestData = [
