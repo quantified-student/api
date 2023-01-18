@@ -1,19 +1,19 @@
-import { RESTDataSource } from 'apollo-datasource-rest';
-import { convertMsToHM } from './helpers';
-import { AttendanceData, RawAttendanceData } from './types';
+import { RESTDataSource } from "apollo-datasource-rest";
+import { convertMsToHM } from "./helpers";
+import { AttendanceData, RawAttendanceData } from "./types";
 
 class QsApi extends RESTDataSource {
   willSendRequest(request: any) {
-    request.headers.set('Authorization', this.context.Authorization);
+    request.headers.set("Authorization", this.context.Authorization);
   }
 
   constructor() {
     super();
-    this.baseURL = 'https://qsapi.azurewebsites.net/attendance';
+    this.baseURL = "https://qsapi.azurewebsites.net/attendance";
   }
 
   public transformAttendanceData(
-    rawData: Array<RawAttendanceData>,
+    rawData: Array<RawAttendanceData>
   ): Array<AttendanceData> {
     const attendanceData: Array<AttendanceData> = new Array<AttendanceData>();
     let totalAttendanceTimeMs: number = 0;
@@ -22,12 +22,14 @@ class QsApi extends RESTDataSource {
       const firstDate = new Date(rawData[i].DateTime);
       const secondDate = new Date(rawData[i + 1].DateTime);
 
-      if (secondDate.getDate() != firstDate.getDate()) throw new Error('dates do not match');
+      if (secondDate.getDate() != firstDate.getDate())
+        throw new Error("dates do not match");
 
       const firstTimeStamp = firstDate.getTime();
       const secondTimeStamp = secondDate.getTime();
 
-      if (secondTimeStamp < firstTimeStamp) throw new Error('second time is before first!');
+      if (secondTimeStamp < firstTimeStamp)
+        throw new Error("second time is before first!");
 
       totalAttendanceTimeMs += secondTimeStamp - firstTimeStamp;
 
@@ -56,7 +58,7 @@ class QsApi extends RESTDataSource {
   }
 
   async getAttendanceData() {
-    const rawData = await this.get<Array<RawAttendanceData>>('');
+    const rawData = await this.get<Array<RawAttendanceData>>("");
 
     return this.transformAttendanceData(rawData);
   }
