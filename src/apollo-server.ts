@@ -12,6 +12,8 @@ import { ApolloServer, gql } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import http from "http";
 
+import cors from "cors";
+
 const typeDef: DocumentNode = gql`
   type Query
 `;
@@ -49,9 +51,11 @@ async function startApolloServer(expressApp: Express) {
   await server.start();
   server.applyMiddleware({ app: expressApp });
 
-  // expressApp.use('/', (req, res) => {
-  //   console.log(req.headers)
-  // });
+  expressApp.use(cors({allowedHeaders: "*", origin: "*"}))
+
+  expressApp.use('/', (req, res) => {
+    console.log(req.headers)
+  });
 
   await new Promise((resolve: any) =>
     httpServer.listen({ port: process.env.PORT || 8080 }, resolve)
