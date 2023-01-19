@@ -1,4 +1,4 @@
-import { Express } from "express";
+import  { Express } from "express";
 
 import CanvasData from "./dataSources/canvas";
 import WatchData from "./dataSources/smartWatch";
@@ -13,6 +13,8 @@ import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import http from "http";
 
 import cors from "cors";
+import dataSharingMiddleware from "./middlewares/data-sharing.middleware";
+import bodyParser from "body-parser";
 
 const typeDef: DocumentNode = gql`
   type Query
@@ -48,14 +50,19 @@ async function startApolloServer(expressApp: Express) {
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer }), loggingPlugin],
   });
 
+  expressApp.use(cors({
+    allowedHeaders: "*",
+    origin: "*"
+  }))
+
+  expressApp.use(bodyParser.json())
+
+  expressApp.use(dataSharingMiddleware);
+
   await server.start();
   server.applyMiddleware({ app: expressApp });
 
-  expressApp.use(cors({allowedHeaders: "*", origin: "*"}))
 
-  expressApp.use('/', (req, res) => {
-    console.log(req.headers)
-  });
 
   await new Promise((resolve: any) =>
     httpServer.listen({ port: process.env.PORT || 8080 }, resolve)

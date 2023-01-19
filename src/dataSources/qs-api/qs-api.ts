@@ -62,15 +62,6 @@ class QsApi extends RESTDataSource {
 
     return this.transformAttendanceData(rawData);
   }
-
-  public async getUserFromDatabase(canvasId: number) {
-    return this.get(`users/${canvasId}`);
-  }
-
-  public async createNewUser(canvasId: number, canvasAccessToken: string)
-  {
-
-  }
 }
 
 export default QsApi;
