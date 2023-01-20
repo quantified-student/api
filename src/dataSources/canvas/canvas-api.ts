@@ -8,7 +8,7 @@ class CanvasAPI extends RESTDataSource {
         );
     }
 
-    willSendResponse() {
+    willSendResponse(response: any) {
         // console.log(response.headers)
     }
 
@@ -42,7 +42,7 @@ class CanvasAPI extends RESTDataSource {
         });
     }
 
-    async getEnrollmentData(courseId: number) {
+    async getEnrollmentData(courseId: number, userId: number) {
         return this.get(`courses/${courseId}/enrollments`);
     }
 }

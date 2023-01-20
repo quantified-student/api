@@ -1,5 +1,6 @@
 import QsApi from "../../../src/dataSources/attendance/qs-api";
 import {
+  AttendanceData,
   RawAttendanceData,
 } from "../../../src/dataSources/attendance/types";
 

@@ -1,25 +1,25 @@
 const resolvers = {
     Query: {
-        CanvasCourses: ({ dataSources }: any) => {
+        CanvasCourses: (parent: any, args: any, { dataSources }: any) => {
             return dataSources.canvasData.getAllCourses()
         },
-        CanvasCourse: ({courseId}: any, { dataSources }: any) => {
+        CanvasCourse: (parent: any, {courseId}: any, { dataSources }: any) => {
             return dataSources.canvasData.getSingleCourse(courseId)
         }
     },
     CanvasCourse: {
-        assignments: (parent: any, { dataSources }: any) => {
+        assignments: (parent: any, args: any, { dataSources }: any) => {
             return dataSources.canvasData.getAssignmentData(parent.id);
         },
-        enrollments: (parent: any, { dataSources }: any) => {
+        enrollments: (parent: any, args: any, { dataSources }: any) => {
             return dataSources.canvasData.getEnrollmentData(parent.id, parent.userId);
         }
     },
     Assignment: {
-        submissions: (parent: any, { dataSources }: any) => {
+        submissions: (parent: any, args: any, { dataSources }: any) => {
             return dataSources.canvasData.getSubmissionData(parent.course_id, parent.id);
         },
-        outcomes: (parent: any, { dataSources }: any) => {
+        outcomes: (parent: any, args: any, { dataSources }: any) => {
             return dataSources.canvasData.getOutcomesData(parent.course_id, parent.id);
         }
     }

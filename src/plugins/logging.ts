@@ -1,7 +1,7 @@
 const loggingPlugin = {
   // Fires whenever a GraphQL request is received from a client.
 
-  async requestDidStart() {
+  async requestDidStart(requestContext: any) {
     // console.log('Request started! Query:\n'
     // + requestContext.request.query
     // );
@@ -11,7 +11,7 @@ const loggingPlugin = {
 
       // request to create its associated document AST.
 
-      async parsingDidStart() {
+      async parsingDidStart(requestContext: any) {
         // console.log('Parsing started!');
       },
 
@@ -19,7 +19,7 @@ const loggingPlugin = {
 
       // request's document AST against your GraphQL schema.
 
-      async validationDidStart() {
+      async validationDidStart(requestContext: any) {
         // console.log('Validation started!');
       },
     };
