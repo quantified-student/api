@@ -1,10 +1,14 @@
 import { RESTDataSource } from "apollo-datasource-rest";
-import { convertMsToHM } from "./helpers";
+import { convertMsToHM, groupBy } from "./helpers";
 import { AttendanceData, RawAttendanceData } from "./types";
 
 class QsApi extends RESTDataSource {
   willSendRequest(request: any) {
     request.headers.set("Authorization", this.context.Authorization);
+  }
+
+  willSendResponse(response: any) {
+    console.log(response);
   }
 
   constructor() {
@@ -16,44 +20,30 @@ class QsApi extends RESTDataSource {
     rawData: Array<RawAttendanceData>
   ): Array<AttendanceData> {
     const attendanceData: Array<AttendanceData> = new Array<AttendanceData>();
-    let totalAttendanceTimeMs: number = 0;
+    rawData.map((point: RawAttendanceData) => {
+      point.date = point.DateTime.split('T')[0];
+    });
 
-    for (let i = 0; i < rawData.length; i += 2) {
-      const firstDate = new Date(rawData[i].DateTime);
-      const secondDate = new Date(rawData[i + 1].DateTime);
-
-      if (secondDate.getDate() != firstDate.getDate())
-        throw new Error("dates do not match");
-
-      const firstTimeStamp = firstDate.getTime();
-      const secondTimeStamp = secondDate.getTime();
-
-      if (secondTimeStamp < firstTimeStamp)
-        throw new Error("second time is before first!");
-
-      totalAttendanceTimeMs += secondTimeStamp - firstTimeStamp;
-
-      if (i + 3 >= rawData.length) {
-        attendanceData.push({
-          attendanceHours: convertMsToHM(totalAttendanceTimeMs),
-          date: firstDate.toLocaleDateString(),
-        });
-
-        break;
+    let attendanceHolder: any = groupBy(rawData, 'date');
+    Object.entries(attendanceHolder).forEach((date: any) => {
+      let attendanceHours: number = 0;
+      for (let i = 0; i < date[1].length; i++) {
+        if (date[1][i].AtLocation == 0) {
+          continue;
+        } else if (date[1].length - 1 == i) {
+          continue
+        } else if (date[1][i + 1].AtLocation == 0) {
+          let firstDate: Date = new Date(date[1][i].DateTime);
+          let secondDate: Date = new Date(date[1][i+1].DateTime);
+          let firstTime: number = firstDate.getTime();
+          let secondTime: number = secondDate.getTime();
+          attendanceHours += convertMsToHM(secondTime) - convertMsToHM(firstTime);
+        }
       }
-
-      const thirdDate = new Date(rawData[i + 2].DateTime).getDate();
-
-      if (thirdDate != secondDate.getDate()) {
-        attendanceData.push({
-          attendanceHours: convertMsToHM(totalAttendanceTimeMs),
-          date: firstDate.toLocaleDateString(),
-        });
-
-        totalAttendanceTimeMs = 0;
-      }
-    }
-
+      let entry: AttendanceData = { date: date[0], attendanceHours: attendanceHours  };
+      attendanceData.push(entry);
+    })
+    
     return attendanceData;
   }
 
