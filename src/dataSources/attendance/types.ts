@@ -1,4 +1,5 @@
 type RawAttendanceData = {
+  date: string
   DateTime: string;
   AtLocation: number;
 };

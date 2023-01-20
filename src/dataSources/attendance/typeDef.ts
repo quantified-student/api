@@ -3,7 +3,7 @@ import { DocumentNode } from "graphql";
 
 const typeDef: DocumentNode = gql`
   extend type Query {
-    attendanceData: [Datapoint]
+    AttendanceData: [Datapoint]
   }
 
   type Datapoint {
